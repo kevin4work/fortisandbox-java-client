@@ -19,7 +19,7 @@ git clone https://github.com/your-username/fortisandbox-jsonrpc-client.git
 ```
 
 ### Build the project
-Find FortiSandboxClientTest.java and change all the paths to your testing files in related test cases.
+Find FortiSandboxClientTest.java and change all the paths to your testing files in related test cases. Then run below code to build and run the test cases.
 
 ```shell
 cd fortisandbox-jsonrpc-client
