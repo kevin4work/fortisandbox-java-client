@@ -28,5 +28,5 @@ mvn clean install
 
 ### Use in your project
 
-- Build the project first
+- Build this project first
 - Add target/fortisandbox-1.0-SNAPSHOT.jar in your project
