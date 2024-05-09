@@ -21,11 +21,10 @@ git clone https://github.com/your-username/fortisandbox-jsonrpc-client.git
 ### Build the project
 In FortiSandboxClientTest.java:
 - Change the IP of FortiSandbox 
-- Change all the paths to your testing files in related test cases. Then run below code to build and run the test cases.
 
 ```shell
 cd fortisandbox-jsonrpc-client
-mvn clean install
+mvn install
 ```
 
 ### Use in your project
