@@ -22,6 +22,13 @@ public class FortiSandboxClientTest
 {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final static int SUCCESS = 0;
+    private final static String FORTISANDBOX_IP = "165.84.173.22";
+    private final static String FORTISANDBOX_API_USER = "admin";
+    private final static String FORTISANDBOX_API_PASSWORD = "Fortinet100!";
+    private final static String TEST_FILE_PATH = "src/test/resources/Gartner2021.pdf";
+    private final static String TEST_FILE_NAME = "Gartner2021.pdf";
+    
+    
     FortiSandboxClient fortiSandboxclient;
     /**
      * Create the test case
@@ -31,7 +38,7 @@ public class FortiSandboxClientTest
     public FortiSandboxClientTest()
     {
         super();
-        this.fortiSandboxclient = new FortiSandboxClient("165.84.173.22");
+        this.fortiSandboxclient = new FortiSandboxClient(FORTISANDBOX_IP);
     }
 
     /**
@@ -69,8 +76,8 @@ public class FortiSandboxClientTest
     {
         logger.debug(" ======== testSubmitFile started ========");
         try {
-            File file = new File("/home/ec2-user/environment/lab-init.sh");
-            SubmitFileResponse submitResp = fortiSandboxclient.submitFile(file, "hello.txt", getSession());
+            File file = new File(TEST_FILE_PATH);
+            SubmitFileResponse submitResp = fortiSandboxclient.submitFile(file, TEST_FILE_NAME, getSession());
             assertNotNull(submitResp.getStatus());
             assertEquals(SUCCESS, submitResp.getStatus().getCode());
             assertNotNull(submitResp.getData().getSid());
@@ -85,8 +92,8 @@ public class FortiSandboxClientTest
         logger.debug(" ======== testInvalidSession started ========");
         
         try {
-            File file = new File("/home/ec2-user/environment/lab-init.sh");
-            SubmitFileResponse resp = fortiSandboxclient.submitFile(file, "invalid.txt", "fakesessionsssss");
+            File file = new File(TEST_FILE_PATH);
+            SubmitFileResponse resp = fortiSandboxclient.submitFile(file, TEST_FILE_NAME, "fakesessionsssss");
             assertNotNull(resp.getStatus());
             assertNotSame(SUCCESS, resp.getStatus().getCode());
             assertEquals("INVALID_SESSION", resp.getStatus().getMessage());
@@ -148,7 +155,7 @@ public class FortiSandboxClientTest
             GetJobIdVerdictResponse resp = fortiSandboxclient.getJobIdVerdict(jid, getSession());
             assertNotNull(resp.getStatus());
             assertEquals(SUCCESS, resp.getStatus().getCode());
-            assertEquals(resp.getData().getFile_name(), "ok.txt");
+            assertEquals(resp.getData().getFile_name(), TEST_FILE_NAME);
             assertEquals(resp.getData().getRating(), "Clean");
             
         } catch (Throwable e) {
@@ -159,7 +166,7 @@ public class FortiSandboxClientTest
     
     private String getSession(){
         try {
-            return fortiSandboxclient.login("admin", "Fortinet100!").getSession();
+            return fortiSandboxclient.login(FORTISANDBOX_API_USER, FORTISANDBOX_API_PASSWORD).getSession();
         } catch (Throwable e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -170,8 +177,8 @@ public class FortiSandboxClientTest
     private String getSubmitID(){
         
         try {
-            File file = new File("/home/ec2-user/environment/lab-init.sh");
-            return fortiSandboxclient.submitFile(file, "ok.txt", getSession()).getData().getSid();
+            File file = new File(TEST_FILE_PATH);
+            return fortiSandboxclient.submitFile(file, TEST_FILE_NAME, getSession()).getData().getSid();
         } catch (Throwable e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
